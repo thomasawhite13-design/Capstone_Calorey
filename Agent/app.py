@@ -83,13 +83,11 @@ def chat_api():
 def profile():
     if 'user_id' not in session: return redirect(url_for('index'))
     
-    # Fetch from your 'profile_snapshots' or 'users' collection
     doc = db.collection("users").document(session['user_id']).get()
     
     if not doc.exists:
         return render_template('profile.html', profile=None)
         
-    # Assuming your document structure has the 'user_profile' key
     profile_data = doc.to_dict().get('user_profile')
     return render_template('profile.html', profile=profile_data)
 
