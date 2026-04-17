@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat with Calorey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .chat-container { height: 70vh; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+<div class="max-w-2xl mx-auto mt-10 shadow-lg rounded-xl bg-white overflow-hidden">
+    <div class="bg-emerald-600 p-4 text-white flex justify-between items-center">
+        <h2 class="font-bold text-lg">Calorey</h2>
+        <a href="/home" class="text-sm bg-emerald-700 px-3 py-1 rounded hover:bg-emerald-800">Back Home</a>
+    </div>
+
+    <div id="chat-window" class="chat-container p-4 overflow-y-auto space-y-4 flex flex-col">
+        <div class="bg-slate-100 self-start p-3 rounded-lg max-w-[80%] text-sm">
+            Hi! I'm Calorey. Tell me a bit about your goals, age, and weight to get started.
+        </div>
+    </div>
+
+    <div class="p-4 border-t border-slate-100 flex gap-2">
+        <input type="text" id="user-input" 
+               class="flex-1 border rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+               placeholder="Type your message...">
+        <button onclick="sendMessage()" 
+                class="bg-emerald-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-emerald-700 transition">
+            Send
+        </button>
+    </div>
+</div>
+
+<script>
+    const chatWindow = document.getElementById('chat-window');
+    const userInput = document.getElementById('user-input');
+
+    // Allow "Enter" key to send
+    userInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") sendMessage();
+    });
+
+    async function sendMessage() {
+        const text = userInput.value.trim();
+        if (!text) return;
+
+        // 1. Add User Message to UI
+        appendMessage(text, 'user');
+        userInput.value = '';
+
+        // 2. Show "Thinking..."
+        const typingId = appendMessage("Thinking...", 'ai', true);
+
+        try {
+            // 3. Post to Flask Backend
+            const response = await fetch('/chat_api', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text })
+            });
+            const data = await response.json();
+
+            // 4. Update UI with AI response
+            document.getElementById(typingId).innerText = data.reply;
+
+            // 5. If backend indicates to show "View Meal Plan" button, add it to the UI
+            if (data.show_plan_button) {
+                showMealPlanPopup();
+            }
+        } catch (error) {
+            document.getElementById(typingId).innerText = "Error: Could not reach the agent.";
+        }
+        
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    function showMealPlanPopup() {
+        // Check if the popup already exists so we don't spam it
+        if (document.getElementById('meal-plan-popup')) return;
+
+        const popup = document.createElement('div');
+        popup.id = 'meal-plan-popup';
+        // Using Tailwind for a nice floating animation
+        popup.className = "fixed bottom-24 right-6 bg-emerald-600 text-white p-4 rounded-2xl shadow-2xl flex items-center gap-4 animate-bounce cursor-pointer hover:bg-emerald-700 transition-all z-50";
+    
+        popup.innerHTML = `
+            <div class="text-2xl">📅</div>
+            <div>
+                <div class="font-bold text-sm">Meal Plan Ready!</div>
+                <div class="text-xs opacity-90">Click here to view your schedule.</div>
+            </div>
+            <button onclick="this.parentElement.remove()" class="text-white opacity-50 hover:opacity-100 ml-2">✕</button>
+        `;
+
+        // Make the whole box clickable to go to the plan
+        popup.onclick = (e) => {
+            if (e.target.tagName !== 'BUTTON') {
+                window.location.href = '/meal-plan';
+            }
+        };
+
+        document.body.appendChild(popup);
+    }
+
+    function appendMessage(text, sender, isTyping = false) {
+        const id = 'msg-' + Math.random().toString(36).substr(2, 9);
+        const div = document.createElement('div');
+        
+        if (sender === 'user') {
+            div.className = "bg-emerald-100 self-end p-3 rounded-lg max-w-[80%] text-sm text-emerald-900";
+        } else {
+            div.className = "bg-slate-100 self-start p-3 rounded-lg max-w-[80%] text-sm text-slate-800";
+        }
+        
+        div.id = id;
+        div.innerText = text;
+        chatWindow.appendChild(div);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+        return id;
+    }
+</script>
+</body>
+</html>

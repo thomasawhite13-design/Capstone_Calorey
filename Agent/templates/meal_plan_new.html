@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Nutrition Plan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { height: 6px; }
+        .no-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        .no-scrollbar::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
+    </style>
+</head>
+
+<body class="bg-gray-50 p-6">
+<div class="max-w-7xl mx-auto">
+
+    <!-- Header -->
+    <header class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Weekly Meal Plan</h1>
+        <a href="/home" class="text-emerald-600 hover:underline font-medium">← Back to Dashboard</a>
+    </header>
+
+    {% if plan %}
+
+    <!-- Breakfast + Lunch -->
+    <div class="grid md:grid-cols-2 gap-6 mb-10">
+
+        <!-- Breakfast -->
+        <div class="bg-white rounded-xl shadow-sm border border-orange-100 p-6">
+            <div class="flex justify-between items-start mb-4">
+                <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-bold uppercase">Breakfast</span>
+                <span class="text-gray-500 text-sm">{{ plan.breakfast.calories }} kcal</span>
+            </div>
+
+            <h3 class="text-xl font-bold text-gray-800 mb-2">{{ plan.breakfast.name }}</h3>
+
+            <details class="mb-4">
+                <summary class="text-sm text-emerald-600 cursor-pointer font-medium">View Ingredients ▼</summary>
+                <ul class="mt-3 list-disc list-inside text-sm text-gray-600 space-y-1 border-t pt-3">
+                    {% for ing in plan.breakfast.ingredients %}
+                    <li>{{ ing.quantity }} {{ ing.name }}</li>
+                    {% endfor %}
+                </ul>
+            </details>
+
+            <div class="text-xs text-gray-400">
+                P: {{ plan.breakfast.protein }}g | C: {{ plan.breakfast.carbs }}g | F: {{ plan.breakfast.fat }}g
+            </div>
+        </div>
+
+        <!-- Lunch -->
+        <div class="bg-white rounded-xl shadow-sm border border-blue-100 p-6">
+            <div class="flex justify-between items-start mb-4">
+                <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold uppercase">Lunch</span>
+                <span class="text-gray-500 text-sm">{{ plan.lunch.calories }} kcal</span>
+            </div>
+
+            <h3 class="text-xl font-bold text-gray-800 mb-2">{{ plan.lunch.name }}</h3>
+
+            <details class="mb-4">
+                <summary class="text-sm text-emerald-600 cursor-pointer font-medium">View Ingredients ▼</summary>
+                <ul class="mt-3 list-disc list-inside text-sm text-gray-600 space-y-1 border-t pt-3">
+                    {% for ing in plan.lunch.ingredients %}
+                    <li>{{ ing.quantity }} {{ ing.name }}</li>
+                    {% endfor %}
+                </ul>
+            </details>
+
+            <div class="text-xs text-gray-400">
+                P: {{ plan.lunch.protein }}g | C: {{ plan.lunch.carbs }}g | F: {{ plan.lunch.fat }}g
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Dinner Section -->
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Dinner Rotation</h2>
+
+    {% set ordered_days = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"] %}
+
+    <div class="grid gap-5">
+        {% for day in ordered_days %}
+        {% if day in plan.dinners %}
+        {% set meal = plan.dinners[day] %}
+
+        <div class="group bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition overflow-hidden">
+
+            <!-- Header -->
+            <div class="flex items-center justify-between p-5 border-b bg-gradient-to-r from-emerald-50 to-white">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 font-bold">
+                        {{ day[:3] | capitalize }}
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-800">{{ meal.name }}</h4>
+                        <p class="text-xs text-gray-400 uppercase">{{ day }}</p>
+                    </div>
+                </div>
+
+                <div class="text-right">
+                    <div class="text-emerald-600 font-bold text-lg">{{ meal.calories }} kcal</div>
+                    <div class="text-xs text-gray-400">
+                        P: {{ meal.protein }}g • C: {{ meal.carbs }}g • F: {{ meal.fat }}g
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expand -->
+            <details>
+                <summary class="cursor-pointer px-5 py-3 text-sm text-gray-500 hover:text-emerald-600 font-medium flex justify-between">
+                    <span>View Ingredients & Instructions</span>
+                    <span>▼</span>
+                </summary>
+
+                <div class="px-5 pb-5 grid md:grid-cols-2 gap-6 text-sm">
+
+                    <!-- Ingredients -->
+                    <div>
+                        <h5 class="font-semibold text-gray-700 mb-2">Ingredients</h5>
+                        <ul class="space-y-1 text-gray-600">
+                            {% for ing in meal.ingredients %}
+                            <li class="flex justify-between border-b border-gray-100 py-1">
+                                <span>{{ ing.name }}</span>
+                                <span class="text-gray-400">{{ ing.quantity }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <!-- Instructions -->
+                    <div>
+                        <h5 class="font-semibold text-gray-700 mb-2">Instructions</h5>
+                        <ol class="space-y-2 text-gray-600 list-decimal list-inside">
+                            {% for step in meal.instructions %}
+                            <li>{{ step }}</li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+
+                </div>
+            </details>
+        </div>
+
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    {% else %}
+
+    <!-- Empty State -->
+    <div class="text-center py-20 bg-white rounded-2xl shadow-inner border-2 border-dashed border-gray-200">
+        <p class="text-gray-400 italic">No meal plan found. Start a conversation with the agent to generate one!</p>
+        <a href="/chat" class="mt-4 inline-block bg-emerald-600 text-white px-6 py-2 rounded-lg font-bold">Go to Chat</a>
+    </div>
+
+    {% endif %}
+
+</div>
+</body>
+</html>

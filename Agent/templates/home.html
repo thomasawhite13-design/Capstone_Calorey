@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | Calorey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 p-6 md:p-12">
+    <div class="max-w-5xl mx-auto">
+        <header class="flex justify-between items-center mb-12">
+            <div>
+                <h1 class="text-4xl font-black text-slate-800">Hello, <span class="text-emerald-600">{{ user_id }}</span></h1>
+                <p class="text-slate-500 font-medium">What would you like to do today?</p>
+            </div>
+            <a href="/logout" class="text-sm font-bold text-slate-400 hover:text-red-500 transition">Sign Out</a>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <a href="/chat" class="group bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+                <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-emerald-600 transition-colors">
+                    <span class="text-2xl group-hover:filter group-hover:brightness-0 group-hover:invert transition">💬</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Consult AI</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Update your stats, discuss food preferences, or ask for adjustments.</p>
+            </a>
+
+            <a href="/meal-plan" class="group bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+                <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors">
+                    <span class="text-2xl group-hover:filter group-hover:brightness-0 group-hover:invert transition">📅</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">View Meal Plan</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Check your weekly breakfast, lunch, and dinner rotation with macros.</p>
+            </a>
+
+            <a href="/profile" class="group bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+                <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-purple-600 transition-colors">
+                    <span class="text-2xl group-hover:filter group-hover:brightness-0 group-hover:invert transition">👤</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">My Profile</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Review your physical metrics, allergies, and nutritional targets.</p>
+            </a>
+
+        </div>
+
+        <footer class="mt-16 pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between text-slate-400 text-xs gap-4">
+            <p>© 2026 Calorey Systems | Powered by LangGraph</p>
+            <div class="flex gap-6">
+                <span>Privacy Policy</span>
+                <span>System Status: <span class="text-emerald-500 font-bold">Online</span></span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

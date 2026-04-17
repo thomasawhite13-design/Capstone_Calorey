@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Nutrition Plan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-6">
+    <div class="max-w-6xl mx-auto">
+        <header class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Weekly Meal Plan</h1>
+            <a href="/home" class="text-emerald-600 hover:underline font-medium">← Back to Dashboard</a>
+        </header>
+
+        {% if plan %}
+        <div class="grid md:grid-cols-2 gap-6 mb-10">
+            <div class="bg-white rounded-xl shadow-sm border border-orange-100 p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Breakfast</span>
+                    <span class="text-gray-500 text-sm">{{ plan.breakfast.calories }} kcal</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">{{ plan.breakfast.name }}</h3>
+                <p class="text-gray-600 text-sm mb-4">Your consistent morning fuel for the week.</p>
+                <div class="text-xs font-mono text-gray-400">P: {{ plan.breakfast.protein }}g | C: {{ plan.breakfast.carbs }}g | F: {{ plan.breakfast.fat }}g</div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-blue-100 p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Lunch</span>
+                    <span class="text-gray-500 text-sm">{{ plan.lunch.calories }} kcal</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">{{ plan.lunch.name }}</h3>
+                <p class="text-gray-600 text-sm mb-4">High-protein mid-day meal.</p>
+                <div class="text-xs font-mono text-gray-400">P: {{ plan.lunch.protein }}g | C: {{ plan.lunch.carbs }}g | F: {{ plan.lunch.fat }}g</div>
+            </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Dinner Rotation</h2>
+        <div class="space-y-4">
+            {% for day, meal in plan.dinners.items() %}
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="flex flex-col md:flex-row">
+                    <div class="bg-emerald-50 md:w-40 p-4 flex flex-col justify-center items-center border-b md:border-b-0 md:border-r border-emerald-100">
+                        <span class="text-emerald-800 font-black text-lg uppercase">{{ day[:3] }}</span>
+                    </div>
+                    
+                    <div class="flex-1 p-5">
+                        <div class="flex justify-between items-start">
+                            <h4 class="text-lg font-bold text-gray-800">{{ meal.name }}</h4>
+                            <div class="text-right">
+                                <div class="text-emerald-600 font-bold">{{ meal.calories }} kcal</div>
+                                <div class="text-[10px] text-gray-400 uppercase tracking-tst">Protein: {{ meal.protein }}g</div>
+                            </div>
+                        </div>
+
+                        <details class="mt-4 group">
+                            <summary class="text-sm text-gray-500 cursor-pointer hover:text-emerald-600 transition font-medium list-none">
+                                View Ingredients & Instructions ▼
+                            </summary>
+                            <div class="mt-4 grid md:grid-cols-2 gap-4 text-sm border-t pt-4">
+                                <div>
+                                    <h5 class="font-bold text-gray-700 mb-2">Ingredients:</h5>
+                                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                        {% for ing in meal.ingredients %}
+                                        <li>{{ ing.quantity }} {{ ing.name }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-gray-700 mb-2">Instructions:</h5>
+                                    <ol class="list-decimal list-inside text-gray-600 space-y-1">
+                                        {% for step in meal.instructions %}
+                                        <li>{{ step }}</li>
+                                        {% endfor %}
+                                    </ol>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <div class="text-center py-20 bg-white rounded-2xl shadow-inner border-2 border-dashed border-gray-200">
+            <p class="text-gray-400 italic">No meal plan found. Start a conversation with the agent to generate one!</p>
+            <a href="/chat" class="mt-4 inline-block bg-emerald-600 text-white px-6 py-2 rounded-lg font-bold">Go to Chat</a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
