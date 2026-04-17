@@ -97,7 +97,6 @@ def profile():
 def meal_plan():
     if 'user_id' not in session: return redirect(url_for('index'))
     
-    # Fetch from your 'snapshots' collection
     doc = db.collection("users").document(session['user_id']).get()
     
     if not doc.exists:
