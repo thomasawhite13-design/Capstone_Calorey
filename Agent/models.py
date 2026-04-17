@@ -84,16 +84,6 @@ class WeeklyMealPlan(BaseModel):
         default_factory=dict,
         description="A mapping of days of the week to their respective Dinner"
     )
-    
-    """
-    # Optional: Aggregates for the whole week
-    weekly_avg_calories: Optional[int] = Field(None)
-    shopping_list: List[str] = Field(default_factory=list)
-
-    @property
-    def total_protein_count(self) -> int:
-        return sum(day.total_protein for day in self.days.values())
-    """
 
 def reduce_plan(old_plan: Optional[WeeklyMealPlan], update: dict) -> WeeklyMealPlan:
     if isinstance(old_plan, dict):
