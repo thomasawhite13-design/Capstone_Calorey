@@ -9,7 +9,7 @@ from google.cloud import firestore
 CLOUD_SECRET_PATH = "/secrets/firestore-key.json"
 LOCAL_SECRET_PATH = "df-trial-487814-b3428a5d8bc5.json"
 
-# 2. Logic to choose the right key
+# 1. Logic to choose the right key
 if os.path.exists(CLOUD_SECRET_PATH):
     # This runs when deployed to Cloud Run
     cred = credentials.Certificate(CLOUD_SECRET_PATH)
@@ -17,10 +17,9 @@ elif os.path.exists(LOCAL_SECRET_PATH):
     # This runs when you're testing locally
     cred = credentials.Certificate(LOCAL_SECRET_PATH)
 else:
-    # This falls back to 'Default Credentials' (The best-practice way)
     cred = None
 
-# 3. Initialize the app
+# 2. Initialise the app
 if not firebase_admin._apps:
     if cred:
         firebase_admin.initialize_app(cred)
@@ -33,7 +32,7 @@ app = Flask(__name__)
 app.secret_key = "super_secret_nutrition_key"
 
 
-# Initialize the agent once at startup
+# Initialise the agent once at startup
 checkpointer = FirestoreCheckpointer()
 agent = NutritionAgent(checkpointer=checkpointer, db=db)
 
@@ -58,7 +57,7 @@ def home():
 
 @app.route('/chat')
 def chat_page():
-    """Renders the actual HTML page with the chat window."""
+    """ Renders the actual HTML page with the chat window."""
     if 'user_id' not in session:
         return redirect(url_for('index'))
     return render_template('chat.html')
