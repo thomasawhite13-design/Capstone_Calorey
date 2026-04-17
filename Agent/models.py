@@ -8,8 +8,6 @@ import operator
 # Define the allowed options as Literals
 GoalLiteral = Literal["weight_loss", "muscle_gain", "maintenance", "athletic_performance"]
 ActivityLiteral = Literal["sedentary", "low", "medium", "high", "athlete"]
-heightLiteral = Literal["cm", "inches"]
-weightLiteral = Literal["kg", "pounds"]
 DietLiteral = Literal["vegan", "vegetarian", "pescatarian", "paleo", "keto", "unrestricted"]
 GenderLiteral = Literal["male", "female"]
 DayLiteral = Literal["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday","Weekly"]
