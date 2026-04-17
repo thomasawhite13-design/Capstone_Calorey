@@ -6,11 +6,6 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from google.cloud import firestore
 
-"""
-DEPLOYMENT COMMAND:
-gcloud run deploy nutrition-agent --source . --region europe-west2 --allow-unauthenticated --set-env-vars="OPENAI_BASE_URL=https://openrouter.ai/api/v1,LANGCHAIN_TRACING_V2=true,LANGCHAIN_PROJECT=nutrition-agent-prod" --set-secrets="OPENAI_API_KEY=OPENAI_API_KEY:latest,TAVILY_API_KEY=TAVILY_API_KEY:latest,LANGCHAIN_API_KEY=LANGCHAIN_API_KEY:latest,/secrets/firestore-key.json=FIRESTORE_KEY:latest"
-"""
-
 CLOUD_SECRET_PATH = "/secrets/firestore-key.json"
 LOCAL_SECRET_PATH = "df-trial-487814-b3428a5d8bc5.json"
 
