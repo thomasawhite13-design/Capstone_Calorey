@@ -2,6 +2,8 @@
 
 Calorey is a stateful, multi-agent AI system built with LangGraph and Flask. It automates the complex task of weekly meal planning; empowering users to eat healthier diets and acheive their nutrition goals. Calorey simulates a professional nutrition team: an Orchestrator to handle the consultation, a Master Planner to design the menu, and Specialized Workers to research and validate every recipe.
 
+[Live deployment of Calorey](https://nutrition-agent-285051111133.europe-west2.run.app)
+
 ## 🚩 The Problem
 
 Many people have the sincere desire to eat healthier and reach specific fitness goals, but due to the time pressures of life they don't have the time to spend planning balanced and structured meals to help them achieve these goals. The problem can be broken down into 3 main areas:
