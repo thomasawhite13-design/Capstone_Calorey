@@ -287,7 +287,7 @@ class MealPlannerService:
     )
 
     def plan(self, state: AgentState) -> dict:
-        llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
+        llm = ChatOpenAI(model="gpt-4o-mini", temperature=1.0)
         structured_llm = llm.with_structured_output(planner_node_output)
         response = structured_llm.invoke(
             self.PLANNER_PROMPT.format(user_profile=state["user_profile"])
